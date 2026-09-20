@@ -98,13 +98,13 @@ https://api.github.com/users/seaweedsoup98/repos?sort=updated&per_page=100
 
 빈 값과 이메일 형식을 검사하며 오류 메시지를 입력 필드 가까이에 표시합니다. 제출 시 `event.preventDefault()`로 기본 제출 동작을 막습니다.
 
-실제 이메일 전송은 Formspree endpoint가 필요합니다. `index.html`의 아래 속성에 본인의 endpoint를 입력하면 이미 구현된 `fetch()` 전송 코드가 동작합니다.
+실제 이메일 전송은 Formspree endpoint `https://formspree.io/f/myezkwbk`를 사용합니다. `index.html`의 `data-endpoint`에 설정되어 있으며, 유효성 검사를 통과한 폼은 `fetch()`로 전송됩니다.
 
 ```html
-<form id="contact-form" data-endpoint="https://formspree.io/f/FORM_ID" novalidate>
+<form id="contact-form" data-endpoint="https://formspree.io/f/myezkwbk" novalidate>
 ```
 
-endpoint가 비어 있으면 유효성 검증까지만 실행하고 설정 안내 메시지를 표시합니다.
+endpoint가 설정되어 있으므로 정상 입력 시 Formspree로 실제 전송을 시도합니다.
 
 ## 기준값
 
@@ -120,13 +120,13 @@ endpoint가 비어 있으면 유효성 검증까지만 실행하고 설정 안�
 
 공식 GitHub Pages Actions workflow(`.github/workflows/pages.yml`)를 포함합니다.
 
-예상 배포 주소:
+배포 주소:
 
 ```text
 https://seaweedsoup98.github.io/codyssey_B1-1/
 ```
 
-최초 한 번 저장소의 **Settings → Pages → Build and deployment → Source**를 **GitHub Actions**로 지정해야 합니다.
+저장소의 **Settings → Pages → Build and deployment → Source**는 **GitHub Actions**로 설정되어 있습니다.
 
 ## 검증 방법
 
@@ -142,8 +142,8 @@ https://seaweedsoup98.github.io/codyssey_B1-1/
 
 ## 제출 전 사용자 환경에서 필요한 작업
 
-- Formspree에서 Form ID 발급 후 `data-endpoint` 설정 및 실제 이메일 수신 확인
-- GitHub Pages의 Source를 GitHub Actions로 지정하고 배포 URL 접속 확인
+- Formspree 실제 이메일 수신 확인
+- 배포 URL에서 전체 기능 최종 확인
 - 최신 Chrome에서 데스크톱 / 모바일 / 다크모드 스크린샷 촬영
 
 구현 원리와 평가 대비 내용은 [`report/LEARNING_NOTES.md`](report/LEARNING_NOTES.md)에 정리했습니다.
