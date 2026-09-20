@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Jiho의 반응형 포트폴리오 웹사이트">
+  <title>Jiho | Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav-container" aria-label="주요 메뉴">
+      <a class="logo" href="#hero">Jiho</a>
+      <button class="theme-toggle" type="button" aria-label="다크 모드 전환" aria-pressed="false">Dark</button>
+      <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero section" id="hero">
+      <div class="section-inner hero-content reveal">
+        <p class="eyebrow">Hello!</p>
+        <h1>안녕하세요, <strong>Jiho</strong>입니다.</h1>
+        <p class="hero-copy typing" data-text="Operations Research를 공부하며 문제를 구조화하고 해결합니다."></p>
+        <div class="hero-actions">
+          <a class="button primary" href="#projects">프로젝트 보기</a>
+          <a class="button secondary" href="#contact">연락하기</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="section-inner reveal">
+        <h2 id="about-title">About</h2>
+        <article class="about-card">
+          <img class="profile-image" src="images/profile.svg" alt="Jiho의 이니셜 JK가 표시된 프로필 이미지">
+          <div>
+            <h3>문제를 구조화하고, 이해 가능한 방식으로 구현합니다.</h3>
+            <p>Operations Research를 공부하며 최적화와 데이터 기반 의사결정에 관심을 두고 있습니다. 새로운 기술은 동작 원리를 이해하고 직접 구현해보는 방식으로 학습합니다.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section alt-section" id="skills" aria-labelledby="skills-title">
+      <div class="section-inner reveal">
+        <h2 id="skills-title">Skills</h2>
+        <ul class="skill-list">
+          <li>Python</li>
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>Git & GitHub</li>
+          <li>Operations Research</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="section-inner reveal">
+        <div class="section-heading">
+          <div>
+            <h2 id="projects-title">Projects</h2>
+            <p>GitHub API에서 공개 저장소를 가져와 동적으로 표시합니다.</p>
+          </div>
+          <div class="project-filters" aria-label="프로젝트 언어 필터"></div>
+        </div>
+        <div class="projects-grid" aria-live="polite" aria-busy="true"></div>
+      </div>
+    </section>
+
+    <section class="section alt-section" id="contact" aria-labelledby="contact-title">
+      <div class="section-inner contact-layout reveal">
+        <div>
+          <h2 id="contact-title">Contact</h2>
+          <p>아래 폼으로 메시지를 남길 수 있습니다.</p>
+        </div>
+        <form class="contact-form" id="contact-form" data-endpoint="" novalidate>
+          <div class="form-field">
+            <label for="name">이름</label>
+            <input id="name" name="name" type="text" autocomplete="name" aria-describedby="name-error">
+            <p class="field-error" id="name-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="email">이메일</label>
+            <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-error">
+            <p class="field-error" id="email-error"></p>
+          </div>
+          <div class="form-field">
+            <label for="message">메시지</label>
+            <textarea id="message" name="message" rows="6" aria-describedby="message-error"></textarea>
+            <p class="field-error" id="message-error"></p>
+          </div>
+          <button class="button primary submit-button" type="submit">보내기</button>
+          <p class="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="section-inner footer-content">
+      <p>&copy; <span id="current-year"></span> Jiho</p>
+      <a href="https://github.com/seaweedsoup98" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </footer>
+
+  <button class="scroll-top" type="button" aria-label="페이지 맨 위로 이동">↑</button>
+</body>
+</html>
