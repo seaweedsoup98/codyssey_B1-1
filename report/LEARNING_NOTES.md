@@ -205,6 +205,6 @@ Vanilla JavaScript에서는 필요한 부분만 갱신하는 편이 단순하다
 ## 15. 구현의 범위와 한계
 
 - GitHub API는 인증하지 않으므로 요청 한도의 영향을 받는다.
-- Formspree endpoint는 개인 계정에서 발급해야 하므로 저장소에는 임의 값을 넣지 않았다.
+- Formspree endpoint는 발급된 주소를 `index.html`의 `data-endpoint`에 설정했으며, 실제 수신 여부는 배포 환경에서 테스트한다.
 - 최신 Chrome을 기준으로 구현했다.
 - React, Vue, jQuery, Bootstrap, Tailwind 등 외부 라이브러리를 사용하지 않았다.
