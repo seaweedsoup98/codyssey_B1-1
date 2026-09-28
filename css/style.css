@@ -213,7 +213,8 @@ h3 { font-size: 1.25rem; }
 .profile-image {
   width: min(220px, 70vw);
   aspect-ratio: 1;
-  justify-self: center;
+  
+  object-fit: cover;justify-self: center;
   border-radius: 50%;
   box-shadow: var(--shadow);
 }
