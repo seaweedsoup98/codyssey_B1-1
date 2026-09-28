@@ -29,7 +29,7 @@
 ├── js/
 │   └── main.js
 ├── images/
-│   └── profile.svg
+│   └── profile.png
 ├── report/
 │   └── LEARNING_NOTES.md
 ├── .github/workflows/
