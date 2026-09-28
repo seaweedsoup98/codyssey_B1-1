@@ -34,11 +34,31 @@
 │   ├── screenshot-mobile.jpg
 │   └── screenshot-dark.png
 ├── report/
-│   └── LEARNING_NOTES.md
+│   ├── LEARNING_NOTES.md
+│   ├── 00_START_HERE.md
+│   ├── 01_WEB_FOUNDATIONS.md
+│   ├── 02_JAVASCRIPT_DOM.md
+│   ├── 03_IMPLEMENTATION_MAP.md
+│   ├── 04_CODE_WALKTHROUGH.md
+│   └── 05_EVALUATION_QA.md
 ├── .github/workflows/
 │   └── pages.yml
 └── README.md
 ```
+
+## 학습 자료
+
+프론트엔드 입문자라면 아래 순서로 보는 것을 권장합니다.
+
+1. [학습 문서 안내](report/LEARNING_NOTES.md)
+2. [프로젝트 전체 지도](report/00_START_HERE.md)
+3. [HTML/CSS/웹 기초](report/01_WEB_FOUNDATIONS.md)
+4. [JavaScript/DOM/비동기 기초](report/02_JAVASCRIPT_DOM.md)
+5. [미션 요구사항 → 실제 코드 위치](report/03_IMPLEMENTATION_MAP.md)
+6. [기능별 실제 실행 흐름](report/04_CODE_WALKTHROUGH.md)
+7. [평가 대비 Q&A](report/05_EVALUATION_QA.md)
+
+특히 **"이 기능이 실제 코드 어디에 구현되어 있는가?"**가 궁금하면 `03_IMPLEMENTATION_MAP.md`부터 보면 됩니다.
 
 ## 실행 방법
 
@@ -154,6 +174,6 @@ https://seaweedsoup98.github.io/codyssey_B1-1/
 - GitHub Pages 배포 완료
 - Formspree endpoint 설정 완료
 - 데스크톱 / 모바일 / 다크모드 스크린샷 반영 완료
-- Formspree 실제 이메일 수신 여부는 배포 페이지에서 테스트 전송 후 확인
+- Formspree 실제 이메일 수신 확인 완료
 
-구현 원리와 평가 대비 내용은 [`report/LEARNING_NOTES.md`](report/LEARNING_NOTES.md)에 정리했습니다.
+기초 개념부터 실제 코드 위치, 동작 흐름, 평가 대비까지 [`report/`](report/LEARNING_NOTES.md)에 단계별로 정리했습니다.
