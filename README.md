@@ -29,7 +29,10 @@
 ├── js/
 │   └── main.js
 ├── images/
-│   └── profile.png
+│   ├── profile.png
+│   ├── screenshot-desktop.png
+│   ├── screenshot-mobile.jpg
+│   └── screenshot-dark.png
 ├── report/
 │   └── LEARNING_NOTES.md
 ├── .github/workflows/
@@ -128,6 +131,12 @@ https://seaweedsoup98.github.io/codyssey_B1-1/
 
 저장소의 **Settings → Pages → Build and deployment → Source**는 **GitHub Actions**로 설정되어 있습니다.
 
+## 스크린샷
+
+| Desktop · Light | Mobile · Light | Desktop · Dark |
+| :---: | :---: | :---: |
+| ![데스크톱 라이트 모드](images/screenshot-desktop.png) | ![모바일 라이트 모드](images/screenshot-mobile.jpg) | ![데스크톱 다크 모드](images/screenshot-dark.png) |
+
 ## 검증 방법
 
 1. 모바일 폭에서 햄버거 메뉴를 두 번 눌러 열림/닫힘 확인
@@ -140,10 +149,11 @@ https://seaweedsoup98.github.io/codyssey_B1-1/
 8. 빈 폼 제출, 잘못된 이메일 제출, 정상 입력 순서로 유효성 검사 확인
 9. 390px / 768px / 1024px 이상에서 반응형 레이아웃 확인
 
-## 제출 전 사용자 환경에서 필요한 작업
+## 최종 확인 상태
 
-- Formspree 실제 이메일 수신 확인
-- 배포 URL에서 전체 기능 최종 확인
-- 최신 Chrome에서 데스크톱 / 모바일 / 다크모드 스크린샷 촬영
+- GitHub Pages 배포 완료
+- Formspree endpoint 설정 완료
+- 데스크톱 / 모바일 / 다크모드 스크린샷 반영 완료
+- Formspree 실제 이메일 수신 여부는 배포 페이지에서 테스트 전송 후 확인
 
 구현 원리와 평가 대비 내용은 [`report/LEARNING_NOTES.md`](report/LEARNING_NOTES.md)에 정리했습니다.
