@@ -1,141 +1,158 @@
-# 06. 핵심 기능 설명 카드
+# 06. 핵심 기능 빠른 복습
 
-기능을 빠르게 설명하거나 코드 위치를 찾을 때 사용하는 문서다.
+이 문서는 처음 배우는 설명서가 아니라 **이미 한 번 공부한 뒤 기능별 핵심만 빠르게 다시 보는 용도**다.
 
 ---
 
 ## 1. 반응형
 
-### 한 문장
-> 기본 CSS를 모바일용으로 작성하고 768px, 1024px min-width 미디어 쿼리에서 큰 화면 레이아웃을 확장했다.
+### 핵심
+> 기본 CSS는 모바일용이고, 768px과 1024px `min-width` media query에서 큰 화면 규칙을 추가한다.
 
 ### 코드
-- `css/style.css`
 - `@media (min-width: 768px)`
 - `@media (min-width: 1024px)`
 
-### 확인
-767px: 햄버거  
-768px+: 가로 메뉴
+### 눈으로 확인
+- 767px: 햄버거
+- 768px 이상: 가로 navigation
 
 ---
 
 ## 2. 다크모드
 
-### 한 문장
-> 클릭 이벤트가 state.theme을 변경하고 renderTheme이 html의 data-theme과 localStorage를 갱신하며, CSS는 data-theme에 따라 변수 값을 교체한다.
-
 ### 흐름
+
 ```text
-click
+Dark click
 → state.theme
 → renderTheme()
-→ data-theme
-→ CSS variables
-→ 화면
+→ <html data-theme="dark">
+→ CSS dark 변수
+→ 화면 변경
+→ localStorage 저장
 ```
 
-### 코드
-- `state.theme`
-- `getInitialTheme()`
-- `renderTheme()`
+### 검색
+- `getInitialTheme`
+- `renderTheme`
+- `themeStorageKey`
 - `[data-theme="dark"]`
 
 ---
 
 ## 3. 햄버거 메뉴
 
-### 한 문장
-> 모바일에서 클릭할 때 menuOpen 상태를 반전하고 active class를 토글해 메뉴를 표시/숨긴다.
+```text
+click
+→ state.menuOpen 반전
+→ renderMenu()
+→ active class
+→ display none/flex
+```
 
-### 코드
+검색:
 - `state.menuOpen`
-- `renderMenu()`
+- `renderMenu`
 - `.nav-links.active`
 
 ---
 
-## 4. 스크롤
+## 4. Header / Scroll Top
 
-### Header
 ```text
-60px → scrolled class
+scrollY >= 60
+→ header scrolled
+
+scrollY >= 300
+→ scroll-top visible
+
+Top click
+→ window.scrollTo({top:0})
 ```
 
-### Top
-```text
-300px → visible class
-click → scrollTo(0)
-```
-
-### 코드
+검색:
 - `CONFIG`
-- `handleScroll()`
+- `handleScroll`
 
 ---
 
-## 5. 스크롤 등장 효과
+## 5. Reveal animation
 
-### 한 문장
-> IntersectionObserver가 요소가 약 20% viewport에 들어오면 visible class를 붙여 CSS animation을 실행한다.
-
-### 코드
-- `revealThreshold: 0.2`
-- `IntersectionObserver`
-- `.reveal.visible`
+```text
+IntersectionObserver
+→ threshold 0.2
+→ isIntersecting
+→ visible class
+→ CSS animation
+→ unobserve
+```
 
 ---
 
 ## 6. GitHub API
 
-### 한 문장
-> fetch와 async/await로 repository 배열을 받아 state에 저장하고 loading/success/error/empty 상태에 따라 renderProjects가 다른 UI를 그린다.
-
-### 흐름
 ```text
-fetchProjects
+fetchProjects()
 → loading
-→ fetch
-├─ success → items → success/empty
-└─ fail    → error
-→ renderProjects
+→ GET GitHub API
+→ Response
+→ response.ok
+├─ fail → error
+└─ success
+   → response.json()
+   → items
+   → success / empty
+→ renderProjects()
 ```
 
-### 코드
-- `fetchProjects()`
-- `renderProjects()`
-- `response.ok`
+검색:
+- `fetchProjects`
+- `renderProjects`
 - `RATE_LIMIT`
 
 ---
 
-## 7. map / filter
+## 7. repository → 카드
 
-### filter
-선택 언어 repository만 남김.
-
-```js
-items.filter(({ language }) =>
-  language === selectedLanguage
-)
+```text
+repository 배열
+→ filter: 선택 언어
+→ map(projectCard)
+→ HTML 문자열 배열
+→ join('')
+→ innerHTML
 ```
 
-### map
-repository를 카드 HTML로 변환.
+검색:
+- `visibleProjects`
+- `projectCard`
+- `map(projectCard)`
 
-```js
-projects.map(projectCard).join('')
+---
+
+## 8. 언어 필터 목록
+
+```text
+repository 배열
+→ map(language)
+→ filter(Boolean)
+→ Set 중복 제거
+→ spread로 배열
+→ sort
+→ All 추가
+→ 버튼 HTML
 ```
 
 ---
 
-## 8. Flexbox / Grid
+## 9. Flexbox / Grid
 
 ### Navigation
-Flexbox — 한 줄 정렬.
+Flexbox: 한 줄 중심 배치.
 
 ### Projects
-Grid — 여러 행/열 카드.
+Grid: 여러 행/열 카드.
 
 ```css
 repeat(auto-fit, minmax(250px, 1fr))
@@ -143,49 +160,43 @@ repeat(auto-fit, minmax(250px, 1fr))
 
 ---
 
-## 9. Form 검증
+## 10. Form 검증
 
-### 흐름
 ```text
 input
-→ validateField
-→ state.form.errors
-→ renderFieldError
+→ validateField()
+→ state.form.errors[name]
+→ renderFieldError()
 ```
 
-submit에서는 전체 필드를 다시 검사.
+submit 때 모든 field를 다시 검사.
 
-### 코드
+검색:
 - `FORM_FIELDS`
-- `validateField()`
-- `renderFieldError()`
+- `validateField`
+- `renderFieldError`
 
 ---
 
-## 10. Formspree
+## 11. Formspree
 
-### 흐름
 ```text
 검증 통과
 → FormData
 → POST fetch
-→ 성공/실패 메시지
+→ response.ok
+├─ success → reset + 성공 메시지
+└─ fail → 실패 메시지
 → finally 버튼 복구
 ```
 
-### 코드
-- `submitForm()`
-- `new FormData(DOM.form)`
+검색:
 - `data-endpoint`
-
-실제 이메일 수신 확인 완료.
+- `submitForm`
 
 ---
 
-## 11. state 객체
-
-### 한 문장
-> 여러 UI 상태를 기능별로 한 객체에 묶어 현재 화면을 결정하는 데이터를 한 곳에서 추적하기 위해 사용했다.
+## 12. state
 
 ```text
 state
@@ -195,60 +206,75 @@ state
 └─ form
 ```
 
-중요:
-state를 바꾸는 것만으로는 화면이 자동 변경되지 않는다.  
-Vanilla JS이므로 render 함수를 직접 호출한다.
+state는 데이터일 뿐 자동 렌더링 기능이 없다. 변경 후 render 함수를 직접 호출한다.
 
 ---
 
-## 12. Mobile First
+## 13. DOM 변경
 
-### 한 문장
-> 제한된 모바일 화면의 핵심 레이아웃을 기본으로 하고, 넓은 화면에서 필요한 규칙을 min-width로 추가한다.
-
-### 코드
-기본 CSS → 모바일  
-768px → 태블릿 이상  
-1024px → 데스크톱 이상
+| 방법 | 역할 |
+| --- | --- |
+| `textContent` | 텍스트 변경 |
+| `innerHTML` | 내부 HTML 구조 변경 |
+| `classList` | class 추가/삭제 |
+| `setAttribute` | HTML attribute 변경 |
+| `dataset` | data-* 읽기/쓰기 |
 
 ---
 
-## 13. HTML/CSS/JS 분리
+## 14. JavaScript 문법 핵심
+
+| 문법 | 의미 |
+| --- | --- |
+| `const` | 재대입하지 않을 변수 |
+| `let` | 재대입하는 변수 |
+| `() => {}` | 화살표 함수 |
+| `return` | 함수 종료/값 반환 |
+| `===` | 엄격 비교 |
+| `!` | boolean 반전 |
+| `&&` | 둘 다 참 |
+| `||` | 앞 값이 falsy면 뒤 값 |
+| `...` | 값을 펼침 |
+| `{ name }` | 구조분해 |
+
+---
+
+## 15. 비동기 핵심
 
 ```text
-HTML → 구조
-CSS  → 표현
-JS   → 동작
+fetch()
+→ Promise
+→ await
+→ Response
+→ response.json()
+→ 실제 JavaScript 데이터
 ```
 
-한 영역 수정이 다른 책임과 섞이지 않아 파일 위치와 역할이 명확하다.
-
----
-
-## 14. 시맨틱 태그
-
+오류:
 ```text
-header → 상단
-nav → 탐색
-main → 핵심
-section → 주제
-article → 독립 콘텐츠
-footer → 하단
+throw
+→ catch
+→ finally
 ```
 
 ---
 
-## 15. addEventListener
+## 16. 접근성 핵심
 
-### 한 문장
-> HTML inline onclick 대신 JavaScript 파일에서 이벤트를 연결해 구조와 동작을 분리했다.
+- `alt`: 이미지 의미
+- `label for`: 입력 설명 연결
+- `aria-expanded`: 메뉴 열림
+- `aria-live`: 동적 메시지
+- `aria-invalid`: 입력 오류
+- `prefers-reduced-motion`: 움직임 감소
 
 ---
 
-# 코드 찾기 표
+# 코드 찾기
 
 | 기능 | 검색어 |
 | --- | --- |
+| 설정 | `const CONFIG` |
 | 상태 | `const state` |
 | DOM | `const DOM` |
 | 테마 | `renderTheme` |
@@ -256,11 +282,11 @@ footer → 하단
 | 스크롤 | `handleScroll` |
 | 타이핑 | `startTyping` |
 | API | `fetchProjects` |
-| API 화면 | `renderProjects` |
+| API UI | `renderProjects` |
 | 카드 | `projectCard` |
-| filter | `visibleProjects` |
-| form 검사 | `validateField` |
-| form 전송 | `submitForm` |
-| Flex | `.nav-container` |
+| 필터 | `visibleProjects` |
+| Form 검사 | `validateField` |
+| Form 전송 | `submitForm` |
+| Flexbox | `.nav-container` |
 | Grid | `.projects-grid` |
 | 반응형 | `@media` |

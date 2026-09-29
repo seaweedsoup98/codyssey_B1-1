@@ -42,7 +42,8 @@
 │   ├── 04_CODE_WALKTHROUGH.md
 │   ├── 05_CORE_QA.md
 │   ├── 06_QUICK_REFERENCE.md
-│   └── 07_GLOSSARY.md
+│   ├── 07_GLOSSARY.md
+│   └── 08_HTTP_API_ACCESSIBILITY.md
 ├── .github/workflows/
 │   └── pages.yml
 └── README.md
@@ -50,21 +51,24 @@
 
 ## 학습 자료
 
-프론트엔드가 처음이라면 [학습 가이드](report/LEARNING_NOTES.md)에서 시작합니다.
+프론트엔드와 JavaScript가 처음이라면 [학습 가이드](report/LEARNING_NOTES.md)에서 시작합니다.
 
-### 빠르게 볼 때
-1. [프로젝트 전체 그림](report/00_START_HERE.md)
-2. [핵심 기능 설명 카드](report/06_QUICK_REFERENCE.md)
-3. [기능 → 실제 코드 위치 지도](report/03_IMPLEMENTATION_MAP.md)
+### 기초부터 이해하는 순서
 
-### 기초부터 볼 때
-1. [HTML/CSS/브라우저 기초](report/01_WEB_FOUNDATIONS.md)
-2. [JavaScript/DOM/비동기 기초](report/02_JAVASCRIPT_DOM.md)
-3. [기능별 실제 실행 흐름](report/04_CODE_WALKTHROUGH.md)
-4. [핵심 개념 설명 연습](report/05_CORE_QA.md)
-5. [프론트엔드 용어 사전](report/07_GLOSSARY.md)
+1. [프로젝트 전체 구조와 브라우저 동작](report/00_START_HERE.md)
+2. [HTML/CSS 기초와 실제 CSS 읽기](report/01_WEB_FOUNDATIONS.md)
+3. [JavaScript 문법, DOM, 이벤트, 상태, 비동기](report/02_JAVASCRIPT_DOM.md)
+4. [HTTP/API/Formspree/접근성/안전한 HTML 출력](report/08_HTTP_API_ACCESSIBILITY.md)
+5. [기능 → 실제 코드 위치 지도](report/03_IMPLEMENTATION_MAP.md)
+6. [실제 실행 흐름 따라가기](report/04_CODE_WALKTHROUGH.md)
 
-**코드 위치가 궁금하면 `03_IMPLEMENTATION_MAP.md`, 기능을 짧게 다시 설명하려면 `06_QUICK_REFERENCE.md`를 보면 됩니다.**
+### 이해 후 복습
+
+- [핵심 개념 설명 연습](report/05_CORE_QA.md)
+- [핵심 기능 빠른 복습](report/06_QUICK_REFERENCE.md)
+- [프론트엔드 용어 사전](report/07_GLOSSARY.md)
+
+**처음 학습할 때는 05와 06부터 읽지 않는 것이 좋습니다.** 두 문서는 개념을 한 번 이해한 뒤 빠르게 다시 확인하기 위한 자료입니다.
 
 ## 실행 방법
 

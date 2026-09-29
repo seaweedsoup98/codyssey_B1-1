@@ -1,169 +1,240 @@
 # 00. 프로젝트 전체 그림부터 이해하기
 
-## 1. 완성 화면만 보면 단순하지만 내부에서는 여러 일이 일어난다
+이 문서는 코드를 보기 전에 **브라우저가 무엇을 하고, 저장소의 각 파일이 어떤 역할을 하는지** 이해하는 데 목적이 있다.
 
-이 사이트는 한 페이지짜리 포트폴리오지만 내부적으로 다음 시스템이 연결된다.
+## 1. 이 프로젝트는 정적 웹사이트다
 
-```mermaid
-flowchart LR
-    Browser["브라우저"] --> HTML["index.html"]
-    Browser --> CSS["style.css"]
-    Browser --> JS["main.js"]
-    User["사용자
-클릭·입력·스크롤"] --> JS
-    JS --> DOM["DOM"]
-    DOM --> Screen["화면"]
-    JS --> GitHub["GitHub API"]
-    JS --> Formspree["Formspree"]
-    GitHub --> JS
-    Formspree --> JS
+이 저장소에는 서버 프로그램이 없다.
+
+```text
+GitHub 저장소
+├─ index.html
+├─ css/style.css
+├─ js/main.js
+└─ images/...
 ```
 
-### 한 줄 요약
+GitHub Pages가 이 파일들을 웹에서 내려받을 수 있게 제공한다.
 
-- HTML이 페이지 뼈대를 만든다.
-- CSS가 크기/색상/배치를 정한다.
-- JavaScript가 버튼, 스크롤, API, 폼을 움직인다.
-- GitHub API가 프로젝트 데이터를 준다.
-- Formspree가 Contact 메시지를 이메일로 전달한다.
+- **GitHub 저장소**: 파일과 commit을 보관하는 곳
+- **GitHub Pages**: 저장소의 정적 파일을 웹사이트로 제공하는 기능
+- **브라우저**: 전달받은 HTML/CSS/JS를 해석해 실제 화면을 만드는 프로그램
+
+Contact에서 이메일이 전송되는 것은 GitHub Pages가 메일 서버 역할을 해서가 아니다. JavaScript가 별도의 **Formspree 서버**에 데이터를 보낸다.
+
+Projects도 저장소 안에 프로젝트 카드가 미리 적혀 있는 것이 아니다. JavaScript가 **GitHub API 서버**에 데이터를 요청해서 받아온다.
 
 ---
 
-## 2. 브라우저가 페이지를 여는 순서
+## 2. 페이지를 열었을 때 일어나는 일
 
 ```text
-1. URL 접속
-2. GitHub Pages가 index.html 전달
-3. 브라우저가 HTML 읽기
-4. css/style.css 요청
-5. js/main.js 요청
-6. HTML → DOM 생성
-7. CSS 계산 → 화면 그림
-8. defer된 main.js 실행
-9. 이벤트 listener 등록
-10. GitHub API 요청
-11. 사용자의 클릭/입력/스크롤을 기다림
+사용자가 URL 입력
+        ↓
+GitHub Pages에 index.html 요청
+        ↓
+브라우저가 index.html 다운로드
+        ↓
+HTML을 위에서 아래로 읽음
+        ↓
+<link> 발견 → css/style.css 요청
+<script defer> 발견 → js/main.js 다운로드
+        ↓
+HTML을 DOM으로 구성
+        ↓
+CSS 규칙 계산
+        ↓
+첫 화면 그림
+        ↓
+HTML 구성이 끝난 뒤 main.js 실행
+        ↓
+이벤트 등록 + 초기 함수 실행 + GitHub API 요청
+        ↓
+사용자 클릭/입력/스크롤에 반응
 ```
 
-중요한 점은 **HTML 파일 그 자체와 화면의 DOM은 완전히 같은 개념이 아니라는 것**이다.
+### HTML 파일과 DOM은 다르다
 
-- HTML 파일: 저장소에 저장된 원본
-- DOM: 브라우저가 HTML을 읽어 메모리에 만든 객체 구조
-- JavaScript: DOM을 바꿔서 현재 화면을 바꿈
+저장소의 HTML:
+
+```html
+<button class="theme-toggle">Dark</button>
+```
+
+브라우저는 이 코드를 읽고 메모리 안에 **버튼 객체**를 만든다. 이 객체가 DOM의 일부다.
+
+JavaScript:
+
+```js
+document.querySelector('.theme-toggle')
+```
+
+은 HTML 파일의 문자열을 수정하는 것이 아니라 **브라우저가 만들어 둔 현재 DOM 객체를 찾는 코드**다.
+
+그래서 다크모드를 눌렀다고 저장소의 index.html 파일이 변경되는 것은 아니다. 현재 열린 페이지의 DOM만 바뀐다.
 
 ---
 
-## 3. 파일별 책임
+## 3. window, document, DOM의 관계
+
+브라우저가 JavaScript에 기본으로 제공하는 객체가 있다.
 
 ```text
-codyssey_B1-1/
-├── index.html              구조와 콘텐츠
-├── css/style.css           디자인과 반응형 레이아웃
-├── js/main.js              동작과 상태
-├── images/                 이미지/스크린샷
-├── report/                 학습 자료
-└── .github/workflows/      GitHub Pages 배포
+window
+└─ document
+   └─ <html>
+      ├─ <head>
+      └─ <body>
+         ├─ header
+         ├─ main
+         └─ footer
 ```
 
-### index.html에서 찾을 것
+- `window`: 현재 브라우저 탭/창을 나타내는 가장 바깥 객체
+- `document`: 현재 HTML 문서를 나타내는 객체
+- `document.documentElement`: HTML의 `<html>` 요소
+- DOM Element: button, section, input 같은 개별 요소 객체
+
+실제 코드:
+
+```js
+window.scrollY
+document.querySelector('.theme-toggle')
+document.documentElement.dataset.theme
+```
+
+각각 브라우저 창, 문서, html 요소를 다룬다.
+
+---
+
+## 4. 파일별 책임
+
+| 파일 | 책임 | 대표 예 |
+| --- | --- | --- |
+| `index.html` | 페이지 구조와 콘텐츠 | nav, About, form |
+| `css/style.css` | 색상, 크기, 배치, 반응형 | Grid, dark theme |
+| `js/main.js` | 이벤트, 상태, API, DOM 변경 | renderTheme, fetchProjects |
+| `images/` | 프로필/스크린샷 | profile.png |
+| `.github/workflows/pages.yml` | Pages 배포 절차 | GitHub Actions |
+| `report/` | 학습 자료 | 이 문서들 |
+
+## 5. index.html에서 화면 위치 찾기
 
 | 화면 | 검색어 |
 | --- | --- |
 | 상단 메뉴 | `site-header`, `nav-container` |
 | 첫 화면 | `id="hero"` |
 | 자기소개 | `id="about"` |
-| 기술 | `id="skills"` |
-| 프로젝트 | `id="projects"` |
-| 문의 | `id="contact"` |
-| 하단 | `site-footer` |
+| Skills | `id="skills"` |
+| Projects | `id="projects"` |
+| Contact | `id="contact"` |
+| Footer | `site-footer` |
 
-### style.css에서 찾을 것
-
-| 개념 | 검색어 |
-| --- | --- |
-| 색상 변수 | `:root` |
-| 다크모드 | `[data-theme="dark"]` |
-| Flexbox | `.nav-container` |
-| Grid | `.projects-grid` |
-| 모바일 메뉴 | `.menu-toggle`, `.nav-links` |
-| 768px | `@media (min-width: 768px)` |
-| 1024px | `@media (min-width: 1024px)` |
-
-### main.js에서 찾을 것
+## 6. style.css에서 기능 찾기
 
 | 기능 | 검색어 |
 | --- | --- |
-| 설정 | `CONFIG` |
-| 화면 상태 | `state` |
-| DOM 선택 | `DOM` |
+| 공통 색상 | `:root` |
+| 다크모드 | `[data-theme="dark"]` |
+| 상단 가로 배치 | `.nav-container` |
+| 프로젝트 카드 Grid | `.projects-grid` |
+| 모바일 메뉴 | `.menu-toggle`, `.nav-links` |
+| 태블릿 이상 | `@media (min-width: 768px)` |
+| 데스크톱 이상 | `@media (min-width: 1024px)` |
+
+## 7. main.js에서 기능 찾기
+
+main.js는 크게 다음 순서다.
+
+```text
+CONFIG       숫자/이름 같은 설정값
+state        현재 UI 상태
+DOM          화면 요소 참조
+↓
+작은 기능 함수
+↓
+Projects 관련 함수
+↓
+Form 관련 함수
+↓
+이벤트 등록
+↓
+IntersectionObserver
+↓
+초기 실행
+```
+
+대표 검색어:
+
+| 기능 | 검색어 |
+| --- | --- |
 | 테마 | `renderTheme` |
 | 햄버거 | `renderMenu` |
 | 스크롤 | `handleScroll` |
 | 타이핑 | `startTyping` |
-| 프로젝트 API | `fetchProjects` |
-| 프로젝트 화면 | `renderProjects` |
+| GitHub 요청 | `fetchProjects` |
+| 카드 출력 | `renderProjects` |
 | 폼 검사 | `validateField` |
 | 폼 전송 | `submitForm` |
 
 ---
 
-## 4. 기능 하나를 이해하는 공식
+## 8. 기능 하나를 이해하는 네 단계
 
-기능 하나를 볼 때 항상 네 질문만 한다.
+예를 들어 햄버거 메뉴를 공부한다.
 
-### Q1. HTML에서 어떤 요소인가?
-예: 다크모드 → `.theme-toggle` 버튼
-
-### Q2. CSS에서 어떤 모습인가?
-예: `:root`, `[data-theme="dark"]`
-
-### Q3. JS에서 어떤 이벤트를 받나?
-예: `themeButton.addEventListener('click', ...)`
-
-### Q4. 이벤트 뒤 무엇이 바뀌나?
-예: `state.theme → renderTheme() → data-theme → CSS 변수`
-
-이 방식으로 보면 코드를 처음부터 끝까지 읽을 필요가 없다.
-
----
-
-## 5. 가장 먼저 직접 확인할 5가지
-
-### ① 모바일 햄버거
-브라우저 폭을 767px로 줄인다.
+### 1단계: HTML
+버튼과 메뉴가 어디 있는지 찾는다.
 
 ```text
-☰ 클릭
-→ 메뉴 열림
-→ 다시 클릭
-→ 메뉴 닫힘
+.menu-toggle
+.nav-links
 ```
 
-### ② 다크모드
-Dark 클릭 → 새로고침 → 유지 확인
+### 2단계: CSS
+닫혔을 때와 열렸을 때 모양을 본다.
 
-### ③ 스크롤
-60px 이후 header 변화, 300px 이후 ↑ 버튼 확인
+```css
+.nav-links { display: none; }
+.nav-links.active { display: flex; }
+```
 
-### ④ Projects
-Network 탭에서 GitHub API 요청 확인
+### 3단계: JavaScript
+클릭 이벤트와 상태를 찾는다.
 
-### ⑤ Contact
-잘못된 이메일 → 오류 → 정상 입력 → 실제 이메일 전송
+```text
+state.menuOpen
+renderMenu()
+menuButton.addEventListener(...)
+```
+
+### 4단계: 전체 흐름
+```text
+클릭
+→ menuOpen 값 변경
+→ renderMenu()
+→ active class 추가/제거
+→ CSS 규칙 변경
+→ 메뉴가 보이거나 숨겨짐
+```
+
+다른 기능도 같은 방법으로 보면 된다.
 
 ---
 
-## 6. 개발자 도구 세 탭만 알면 공부가 빨라진다
+## 9. 개발자 도구 세 탭
+
+Chrome에서 개발자 도구를 열면 코드를 직접 관찰할 수 있다.
 
 ### Elements
-현재 DOM과 적용 CSS 확인
+현재 DOM과 적용된 CSS를 확인한다.
 
-추천 실험:
-- Dark 클릭 후 `<html data-theme="dark">` 확인
+추천:
+- 다크모드 클릭 후 `<html data-theme="dark">` 확인
 - 햄버거 클릭 후 `.nav-links.active` 확인
 
 ### Console
-JavaScript 직접 실행
+JavaScript를 직접 실행한다.
 
 ```js
 document.querySelector('.theme-toggle')
@@ -172,13 +243,15 @@ localStorage.getItem('portfolio-theme')
 ```
 
 ### Network
-네트워크 요청 확인
+실제 HTTP 요청을 본다.
 
-- GitHub API → GET
-- Formspree → POST
+- Projects 로딩 → GitHub API GET 요청
+- Contact 전송 → Formspree POST 요청
+
+GET/POST 같은 HTTP 용어는 [08_HTTP_API_ACCESSIBILITY.md](08_HTTP_API_ACCESSIBILITY.md)에서 자세히 설명한다.
 
 ---
 
-## 7. 전체 프로젝트 한 문장 설명
+## 10. 프로젝트의 핵심 한 문장
 
-> HTML로 콘텐츠 구조를 만들고, CSS의 변수·Flexbox·Grid·미디어 쿼리로 반응형 화면을 구성했으며, JavaScript에서 사용자 이벤트와 API 응답을 state 변경으로 연결하고 render 함수가 DOM을 갱신하도록 만든 Vanilla JavaScript 포트폴리오다.
+> HTML로 구조를 만들고 CSS로 반응형 디자인을 적용한 뒤, JavaScript가 이벤트와 외부 데이터에 따라 state를 변경하고 DOM을 갱신하는 구조다.
