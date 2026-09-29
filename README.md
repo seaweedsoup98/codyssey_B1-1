@@ -40,7 +40,8 @@
 │   ├── 02_JAVASCRIPT_DOM.md
 │   ├── 03_IMPLEMENTATION_MAP.md
 │   ├── 04_CODE_WALKTHROUGH.md
-│   └── 05_EVALUATION_QA.md
+│   ├── 05_EVALUATION_QA.md
+│   └── 06_EVALUATION_RUBRIC.md
 ├── .github/workflows/
 │   └── pages.yml
 └── README.md
@@ -56,9 +57,10 @@
 4. [JavaScript/DOM/비동기 기초](report/02_JAVASCRIPT_DOM.md)
 5. [미션 요구사항 → 실제 코드 위치](report/03_IMPLEMENTATION_MAP.md)
 6. [기능별 실제 실행 흐름](report/04_CODE_WALKTHROUGH.md)
-7. [평가 대비 Q&A](report/05_EVALUATION_QA.md)
+7. [평가 대비 개념 Q&A](report/05_EVALUATION_QA.md)
+8. [**실제 평가표 직접 대응 문서**](report/06_EVALUATION_RUBRIC.md)
 
-특히 **"이 기능이 실제 코드 어디에 구현되어 있는가?"**가 궁금하면 `03_IMPLEMENTATION_MAP.md`부터 보면 됩니다.
+특히 **"이 기능이 실제 코드 어디에 구현되어 있는가?"**가 궁금하면 `03_IMPLEMENTATION_MAP.md`, **평가 당일 바로 답변할 문서가 필요하면 `06_EVALUATION_RUBRIC.md`**를 보면 됩니다.
 
 ## 실행 방법
 
