@@ -1,115 +1,102 @@
-# 01. HTML / CSS / 웹 기초
+# 01. HTML / CSS / 브라우저 기초 압축 정리
 
-## 1. 웹사이트를 열면 브라우저는 무엇을 할까?
+# A. 웹의 가장 기본 구조
 
-사용자가 GitHub Pages 주소를 열면 대략 다음 순서로 진행된다.
+## 1. 클라이언트와 서버
+
+- **클라이언트**: 페이지를 보는 Chrome 같은 브라우저
+- **서버**: 파일이나 데이터를 제공하는 쪽
+- **GitHub Pages**: HTML/CSS/JS 파일 제공
+- **GitHub API**: repository 데이터를 JSON으로 제공
+- **Formspree**: Contact 데이터를 받아 이메일로 전달
 
 ```text
-1. 브라우저가 서버에 index.html 요청
-2. HTML 내용을 다운로드
-3. HTML을 읽다가 CSS 링크 발견 → style.css 요청
-4. JavaScript script 발견 → main.js 요청
-5. HTML을 DOM 트리로 구성
-6. CSS 규칙을 계산
-7. 화면을 그림
-8. JavaScript 실행
-9. 클릭, 입력, 스크롤 등을 기다림
+브라우저 ──요청──> 서버
+브라우저 <─응답── 서버
 ```
 
-### 서버와 클라이언트
-
-- **클라이언트**: 지금 페이지를 보는 Chrome 같은 브라우저
-- **서버**: 파일이나 데이터를 제공하는 쪽
-- 이 사이트 파일을 제공하는 서버 역할은 GitHub Pages가 한다.
-- 프로젝트 데이터는 GitHub API 서버에 별도로 요청한다.
-- Contact 메시지는 Formspree 서버로 보낸다.
+HTTP는 이 요청/응답에서 사용하는 대표적인 통신 규칙이다.
 
 ---
 
-## 2. HTML은 무엇인가?
+# B. HTML
 
-HTML은 문서의 **구조와 의미**를 표현하는 언어다.
-
-기본 형태:
+## 2. HTML 요소 구조
 
 ```html
 <p class="hero-copy">안녕하세요.</p>
 ```
 
-- `p`: 태그 이름
-- `class="hero-copy"`: 속성
-- `안녕하세요.`: 내용
+| 부분 | 의미 |
+| --- | --- |
+| `p` | 태그 |
+| `class` | 속성 이름 |
+| `hero-copy` | 속성 값 |
+| 안녕하세요 | 콘텐츠 |
 
-요소 안에 다른 요소가 들어갈 수 있다.
+HTML 요소는 서로 중첩될 수 있다.
 
 ```html
 <section>
   <h2>About</h2>
-  <p>자기소개입니다.</p>
+  <p>소개입니다.</p>
 </section>
 ```
 
-여기서 section은 부모, h2와 p는 자식이라고 생각할 수 있다.
+- section = 부모
+- h2, p = 자식
 
 ---
 
 ## 3. class와 id
 
 ### class
-
-같은 역할이나 디자인을 여러 요소가 공유할 때 사용한다.
+여러 요소가 같은 이름을 공유할 수 있다.
 
 ```html
 <div class="section-inner">
 ```
 
-CSS에서는 점(`.`)으로 찾는다.
+CSS에서는 점으로 찾는다.
 
 ```css
 .section-inner { ... }
 ```
 
 ### id
-
-페이지 안의 특정 요소를 고유하게 식별한다.
+페이지 안에서 특정 요소를 고유하게 식별한다.
 
 ```html
 <section id="projects">
-```
-
-링크:
-
-```html
 <a href="#projects">프로젝트 보기</a>
 ```
 
-는 id가 projects인 요소를 목적지로 삼는다.
-
-우리 프로젝트 기준은:
-
-- 반복되는 스타일/역할 → class
-- 고유 섹션/입력 요소 → id
+`href="#projects"`가 `id="projects"`를 목적지로 사용한다.
 
 ---
 
 ## 4. 시맨틱 태그
 
-시맨틱 태그는 이름 자체가 역할을 설명한다.
-
-| 태그 | 의미 | 우리 프로젝트 |
+| 태그 | 역할 | 이 프로젝트 |
 | --- | --- | --- |
-| header | 상단 정보 | 사이트 헤더 |
-| nav | 탐색 링크 | 메뉴 |
-| main | 핵심 콘텐츠 | Hero ~ Contact |
-| section | 주제별 영역 | About, Skills 등 |
-| article | 독립 콘텐츠 | About 카드, Project 카드 |
-| footer | 하단 정보 | 저작권/GitHub 링크 |
+| `header` | 상단 영역 | 사이트 header |
+| `nav` | 주요 탐색 | 메뉴 |
+| `main` | 핵심 콘텐츠 | Hero~Contact |
+| `section` | 주제별 구역 | About, Skills 등 |
+| `article` | 독립 콘텐츠 | About/Project 카드 |
+| `footer` | 하단 정보 | 저작권/GitHub |
 
-`div`만으로도 같은 화면은 만들 수 있다. 그러나 시맨틱 태그는 코드를 읽는 사람과 보조 기술에 구조를 더 명확하게 전달한다.
+왜 쓰나?
+
+- 코드만 보고 역할 파악 가능
+- 문서 구조가 명확
+- 스크린리더 같은 보조 기술에 의미 전달
+
+`div`만으로도 화면은 만들 수 있지만 의미가 코드에 덜 드러난다.
 
 ---
 
-## 5. head에 들어간 중요한 설정
+## 5. head의 핵심 세 줄
 
 ### viewport
 
@@ -117,7 +104,7 @@ CSS에서는 점(`.`)으로 찾는다.
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ```
 
-모바일 브라우저가 페이지 폭을 실제 기기 폭에 맞춰 계산하게 한다. 반응형 웹에서 핵심이다.
+모바일 브라우저가 실제 기기 폭을 viewport 기준으로 사용하게 한다. 반응형 웹에 중요하다.
 
 ### CSS 연결
 
@@ -125,59 +112,63 @@ CSS에서는 점(`.`)으로 찾는다.
 <link rel="stylesheet" href="css/style.css">
 ```
 
-### JavaScript와 defer
+### JS + defer
 
 ```html
 <script src="js/main.js" defer></script>
 ```
 
-HTML은 위에서 아래로 파싱된다. JavaScript가 너무 일찍 실행되면 아직 만들어지지 않은 DOM을 찾을 수 있다.
+`defer`의 의미:
 
-`defer`는 HTML 파싱을 방해하지 않고, 파싱이 끝난 뒤 JavaScript를 실행하도록 한다.
+```text
+HTML 읽는 중
+├─ JS 다운로드 병행
+└─ HTML DOM 구성 완료 후 JS 실행
+```
+
+DOM이 만들어지기 전에 JS가 요소를 찾는 문제를 줄인다.
 
 ---
 
-## 6. 폼과 접근성
-
-Contact에서:
+## 6. Form의 기본
 
 ```html
 <label for="email">이메일</label>
 <input id="email" name="email" type="email">
 ```
 
-`for="email"`과 `id="email"`을 연결했다.
+- `label for` ↔ `input id`: 설명과 입력칸 연결
+- `name`: 서버로 전송할 필드 이름
+- `type="email"`: 이메일 입력 의미
+- `textarea`: 여러 줄 입력
 
-- label 클릭 시 input으로 포커스 이동
-- 어떤 설명이 어느 입력칸에 해당하는지 명확
+---
 
-### name
-
-`name`은 서버로 폼 데이터를 보낼 때 필드 이름이 된다.
+## 7. alt와 ARIA
 
 ### alt
 
 ```html
-<img src="images/profile.png" alt="Jiho의 프로필 사진">
+<img src="..." alt="Jiho의 프로필 사진">
 ```
 
-이미지가 표시되지 않거나 시각적으로 볼 수 없을 때 이미지 의미를 제공한다.
+이미지의 의미를 텍스트로 제공한다.
 
-### ARIA
+### 이 프로젝트의 ARIA
 
-우리 코드의 예:
-
-- `aria-expanded`: 메뉴가 열렸는지
-- `aria-pressed`: 테마 버튼 상태
-- `aria-busy`: Projects 로딩 여부
-- `aria-live`: 동적 메시지 변화
-- `aria-invalid`: 폼 값 오류 여부
+| 속성 | 의미 |
+| --- | --- |
+| `aria-expanded` | 메뉴 열림/닫힘 |
+| `aria-pressed` | 테마 버튼 상태 |
+| `aria-busy` | 로딩 중 여부 |
+| `aria-live` | 바뀐 메시지를 알림 |
+| `aria-invalid` | 입력 오류 여부 |
 
 ---
 
-# CSS
+# C. CSS
 
-## 7. CSS 문법
+## 8. CSS 기본 문법
 
 ```css
 .hero-copy {
@@ -186,53 +177,77 @@ Contact에서:
 }
 ```
 
-구조:
-
 ```text
 선택자 {
   속성: 값;
 }
 ```
 
-### 선택자 예
+### 자주 쓰는 선택자
 
-- `.button`: class가 button
-- `#projects`: id가 projects
-- `.project-card p`: project-card 안의 p
-- `.button:hover`: 마우스를 올린 button
-- `[data-theme="dark"]`: data-theme 속성이 dark
+| 선택자 | 의미 |
+| --- | --- |
+| `.button` | class=button |
+| `#projects` | id=projects |
+| `.card p` | card 안의 p |
+| `.button:hover` | 마우스를 올린 상태 |
+| `[data-theme="dark"]` | 특정 속성값 |
+| `.nav-links.active` | 두 class를 동시에 가짐 |
 
 ---
 
-## 8. Box Model
+## 9. Cascade와 specificity 최소 이해
 
-브라우저는 대부분의 요소를 사각형 박스로 다룬다.
+같은 요소에 여러 CSS 규칙이 적용되면 브라우저가 어떤 규칙이 더 구체적인지 판단한다.
+
+```css
+.button { color: black; }
+.button.primary { color: white; }
+```
+
+`.button.primary`가 더 구체적이므로 white가 적용된다.
+
+같은 우선순위라면 뒤에 선언된 규칙이 적용되는 경우가 많다.
+
+---
+
+## 10. Box Model
 
 ```text
 margin
-└─ border
-   └─ padding
-      └─ content
+└── border
+    └── padding
+        └── content
 ```
 
 - content: 실제 내용
-- padding: 내용 안쪽 여백
+- padding: 내용과 테두리 사이
 - border: 테두리
-- margin: 요소 바깥 여백
-
-우리 CSS:
+- margin: 바깥 간격
 
 ```css
 * { box-sizing: border-box; }
 ```
 
-는 width 계산에 padding과 border까지 포함하게 해서 크기 계산을 직관적으로 만든다.
+width 계산에 padding/border를 포함해 크기 계산을 단순하게 만든다.
 
 ---
 
-## 9. CSS 변수와 다크모드
+## 11. 길이 단위
 
-라이트 모드 색은:
+| 단위 | 의미 | 사용 예 |
+| --- | --- | --- |
+| `px` | 고정 픽셀 | breakpoint 768px |
+| `rem` | root 글자 크기 기준 | padding, font-size |
+| `vw` | viewport 폭의 1% | 반응형 크기 |
+| `vh` | viewport 높이의 1% | Hero 높이 |
+| `%` | 부모 기준 비율 | width |
+
+이 프로젝트는 상황에 따라 여러 단위를 섞어 사용한다.
+
+---
+
+## 12. CSS 변수
 
 ```css
 :root {
@@ -251,7 +266,15 @@ body {
 }
 ```
 
-다크 모드는:
+장점:
+- 중복 감소
+- 전체 스타일 일관성
+- 한 곳에서 수정
+- 테마 교체가 쉬움
+
+---
+
+## 13. 다크모드 원리
 
 ```css
 [data-theme="dark"] {
@@ -260,23 +283,21 @@ body {
 }
 ```
 
-즉 컴포넌트 스타일을 두 벌 만드는 것이 아니라 **변수 값만 갈아 끼운다.**
+JavaScript가:
 
-```text
-JavaScript가 <html data-theme="dark"> 설정
-             ↓
-[data-theme="dark"] CSS 적용
-             ↓
-CSS 변수 값 변경
-             ↓
-var(--bg), var(--text)를 쓰는 모든 곳이 변경
+```html
+<html data-theme="dark">
 ```
+
+를 만들면 같은 `var(--bg)`가 다른 값을 가리킨다.
+
+핵심은 **컴포넌트 CSS를 복제하지 않고 변수 값만 바꾼 것**이다.
 
 ---
 
-## 10. Flexbox
+## 14. Flexbox
 
-`css/style.css`의 `.nav-container`:
+Navigation:
 
 ```css
 .nav-container {
@@ -286,80 +307,68 @@ var(--bg), var(--text)를 쓰는 모든 곳이 변경
 }
 ```
 
-Flexbox는 **한 축 중심 배치**에 적합하다.
-
-Navigation에서는 로고와 버튼/메뉴를 가로 방향으로 정렬한다.
+Flexbox는 **한 방향의 정렬**에 강하다.
 
 ```css
-.logo {
-  margin-right: auto;
-}
+.logo { margin-right: auto; }
 ```
 
-남는 공간을 로고의 오른쪽 margin이 가져가므로 뒤의 요소가 오른쪽으로 밀린다.
+로고 오른쪽 margin이 남은 공간을 차지하면서 나머지 요소가 오른쪽으로 밀린다.
 
 ---
 
-## 11. Grid
+## 15. Grid
 
 Projects:
 
 ```css
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns:
+    repeat(auto-fit, minmax(250px, 1fr));
 }
 ```
 
 해석:
 
-- `minmax(250px, 1fr)`: 열 하나가 최소 250px, 여유가 있으면 늘어남
-- `auto-fit`: 들어갈 수 있는 만큼 열을 자동 배치
-- `repeat`: 같은 열 규칙 반복
+- `1fr`: 남은 공간 한 몫
+- `minmax(250px, 1fr)`: 최소 250px, 여유가 있으면 확장
+- `auto-fit`: 들어갈 수 있는 열 수 자동 계산
+- `repeat`: 같은 규칙 반복
 
-따라서 카드 수나 화면 폭에 따라 한 열/여러 열이 자동 조정된다.
+정리:
 
----
-
-## 12. Flexbox와 Grid의 차이
-
-평가 답변:
-
-> Flexbox는 한 축을 기준으로 요소를 정렬하는 데 적합해서 Navigation에 사용했습니다. Grid는 행과 열을 함께 관리하기 좋아 Projects 카드 배치에 사용했습니다. Projects는 API 응답에 따라 카드 개수가 바뀌기 때문에 auto-fit과 minmax로 화면 폭에 따라 열 수가 자동 조정되게 했습니다.
+```text
+한 축 중심 → Flexbox
+행 + 열 → Grid
+```
 
 ---
 
-## 13. 반응형 웹과 Mobile First
+## 16. 반응형과 Mobile First
 
-우리 CSS 기본 규칙은 모바일용이다.
-
-그 뒤 큰 화면 규칙을 덧붙인다.
+기본 CSS = 모바일.
 
 ```css
 @media (min-width: 768px) { ... }
 @media (min-width: 1024px) { ... }
 ```
 
-- 기본: 모바일
-- 768px 이상: 태블릿
-- 1024px 이상: 데스크톱
+즉:
 
-예를 들어 모바일에서는 햄버거 버튼이 보이지만:
-
-```css
-@media (min-width: 768px) {
-  .menu-toggle { display: none; }
-}
+```text
+0 ~ 767px       모바일
+768 ~ 1023px    태블릿
+1024px 이상     데스크톱
 ```
 
-태블릿 이상에서는 숨긴다.
+모바일에서는 햄버거 표시, 768px 이상에서는 일반 메뉴 표시.
 
 ---
 
-## 14. position
+## 17. position 세 가지
 
 ### sticky
-
 Header:
 
 ```css
@@ -367,11 +376,10 @@ position: sticky;
 top: 0;
 ```
 
-스크롤하면 위에 붙는다.
+스크롤하다 위에 닿으면 붙는다.
 
 ### fixed
-
-Scroll Top 버튼:
+Scroll Top:
 
 ```css
 position: fixed;
@@ -379,11 +387,10 @@ right: 1rem;
 bottom: 1rem;
 ```
 
-화면 오른쪽 아래에 고정된다.
+viewport에 고정된다.
 
 ### absolute
-
-모바일 메뉴:
+모바일 dropdown:
 
 ```css
 position: absolute;
@@ -391,15 +398,14 @@ top: 64px;
 right: 1rem;
 ```
 
-nav-container를 기준으로 드롭다운처럼 배치된다.
+가까운 positioned 조상을 기준으로 배치된다.
 
 ---
 
-## 15. transition과 animation
+## 18. transition vs animation
 
 ### transition
-
-상태가 바뀔 때 중간 변화를 부드럽게 연결한다.
+상태 A → B 사이를 부드럽게.
 
 ```css
 .button {
@@ -411,26 +417,26 @@ nav-container를 기준으로 드롭다운처럼 배치된다.
 ```
 
 ### animation
-
-정해진 keyframes 순서대로 움직인다.
+keyframes 순서를 실행.
 
 ```css
 @keyframes reveal-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 ```
 
 ---
 
-## 16. 여기까지 이해했는지 확인
+# D. 3분 복습
 
-다음 질문에 답할 수 있으면 HTML/CSS 기초는 충분하다.
-
-- HTML과 CSS 역할의 차이는?
-- class와 id는 언제 쓰나?
-- 왜 시맨틱 태그를 쓰나?
-- Flexbox와 Grid의 차이는?
-- Mobile First는 무엇인가?
-- CSS 변수를 쓰면 다크모드 구현이 왜 쉬워지는가?
-- 768px 미디어 쿼리는 무엇을 의미하는가?
+- HTML = 구조
+- CSS = 표현
+- class = 여러 요소 공유
+- id = 고유 식별
+- semantic = 태그 이름에 역할이 있음
+- Flexbox = 한 축
+- Grid = 행/열
+- Mobile First = 작은 화면 기본 + min-width 확장
+- CSS 변수 = 반복 값 중앙 관리
+- data-theme = JS와 CSS를 연결하는 테마 스위치

@@ -1,86 +1,95 @@
-# 02. JavaScript / DOM / 이벤트 / 비동기 기초
+# 02. JavaScript / DOM / 이벤트 / 비동기 압축 정리
 
-## 1. JavaScript가 이 프로젝트에서 하는 일
+# A. JavaScript 기본 문법
 
-HTML과 CSS만 있어도 정적인 페이지는 보인다. 하지만 다음 기능은 JavaScript가 담당한다.
+## 1. JavaScript가 담당하는 기능
 
-- 햄버거 메뉴 열기/닫기
-- 다크모드
-- 부드러운 스크롤
-- 스크롤 위치에 따른 헤더/Top 버튼 변화
+- 햄버거 메뉴
+- 다크/라이트 테마
+- 스크롤 UI
 - 타이핑 효과
-- GitHub API 호출과 카드 생성
-- 언어 필터
-- 폼 유효성 검사
+- GitHub API
+- 프로젝트 필터
+- 폼 검증
 - Formspree 전송
-- 스크롤 등장 애니메이션
+- 스크롤 등장 효과
 
 ---
 
 ## 2. const와 let
 
-### const
-
-변수 자체를 다른 값으로 다시 대입하지 않을 때 사용한다.
-
 ```js
-const FORM_FIELDS = ['name', 'email', 'message'];
+const state = { theme: 'light' };
+let index = 0;
 ```
+
+### const
+변수 이름이 다른 값을 다시 가리키지 않게 한다.
 
 ### let
+재대입이 필요한 값.
 
-값이 계속 바뀌는 변수에 사용한다.
-
-```js
-let index = 0;
-index += 1;
-```
-
-### const 객체는 왜 내부 값이 바뀌나?
+주의:
 
 ```js
 const state = { theme: 'light' };
-state.theme = 'dark';
+state.theme = 'dark'; // 가능
 ```
 
-는 가능하다.
-
-`const`는 state라는 이름이 **다른 객체를 가리키도록 재대입하는 것**을 막는다. 객체 내부 속성 변경까지 금지하는 것은 아니다.
+const 객체의 속성 변경은 가능하다.
 
 ---
 
 ## 3. 데이터 타입
 
-이 프로젝트에서 보면:
-
-| 종류 | 예 |
+| 타입 | 프로젝트 예 |
 | --- | --- |
-| 문자열 | `'dark'`, `'loading'` |
-| 숫자 | `60`, `300`, `0.2` |
-| Boolean | `true`, `false` |
-| 배열 | `['name', 'email', 'message']` |
-| 객체 | `{ theme: 'light' }` |
+| string | `'dark'` |
+| number | `300` |
+| boolean | `true` |
+| array | `['name','email','message']` |
+| object | `state`, `CONFIG` |
+| null | 명시적으로 값 없음 |
+| undefined | 값이 아직 없음 |
 
-### 배열
+---
 
-여러 값을 순서대로 저장한다.
+## 4. 객체와 배열
 
 ### 객체
 
-이름이 있는 속성을 묶는다.
+```js
+const CONFIG = {
+  githubUser: 'seaweedsoup98',
+  scrollTopThreshold: 300
+};
+```
+
+이름이 있는 값을 묶는다.
+
+접근:
 
 ```js
-const state = {
-  theme: 'light',
-  menuOpen: false
-};
+CONFIG.githubUser
+```
+
+### 배열
+
+```js
+const FORM_FIELDS = ['name', 'email', 'message'];
+```
+
+순서가 있는 값 모음.
+
+접근:
+
+```js
+FORM_FIELDS[0]
 ```
 
 ---
 
-## 4. 함수
-
-함수는 하나의 작업을 묶은 코드다.
+## 5. 함수
 
 ```js
 const renderMenu = () => {
@@ -94,82 +103,84 @@ const renderMenu = () => {
 renderMenu();
 ```
 
-우리 main.js의 핵심 함수:
-
-| 함수 | 책임 |
-| --- | --- |
-| getInitialTheme | 처음 테마 결정 |
-| renderTheme | 테마 상태를 화면에 반영 |
-| renderMenu | 메뉴 상태 반영 |
-| handleScroll | 스크롤 UI 처리 |
-| startTyping | 타이핑 효과 |
-| projectCard | 저장소 1개를 카드 HTML로 변환 |
-| visibleProjects | 필터 결과 계산 |
-| renderProjectFilters | 필터 버튼 생성 |
-| renderProjects | Projects 상태별 화면 표시 |
-| fetchProjects | GitHub API 요청 |
-| validateField | 폼 값 검사 |
-| renderFieldError | 오류를 DOM에 표시 |
-| submitForm | Formspree 전송 |
+함수의 장점:
+- 한 작업을 이름으로 묶음
+- 반복 가능
+- 복잡한 코드를 작은 책임으로 분리
 
 ---
 
-## 5. 화살표 함수
+## 6. 화살표 함수와 callback
 
 ```js
-const getStoredTheme = () =>
-  localStorage.getItem(CONFIG.themeStorageKey);
+button.addEventListener('click', () => {
+  renderMenu();
+});
 ```
 
-일반 함수로 생각하면:
-
-```js
-function getStoredTheme() {
-  return localStorage.getItem(CONFIG.themeStorageKey);
-}
-```
-
-정도로 이해하면 된다.
-
----
-
-## 6. 조건문과 엄격 비교
-
-```js
-if (storedTheme === 'light' || storedTheme === 'dark') {
-  return storedTheme;
-}
-```
-
-조건이 참이면 실행한다.
-
-`===`는 값뿐 아니라 타입까지 엄격하게 비교한다. 예측하기 어려운 자동 타입 변환을 피하기 위해 이 프로젝트에서는 엄격 비교를 사용한다.
-
----
-
-## 7. 삼항 연산자
-
-```js
-state.theme = state.theme === 'dark' ? 'light' : 'dark';
-```
-
-해석:
+여기서 `() => {...}`는 click이 발생했을 때 나중에 브라우저가 호출하는 callback 함수다.
 
 ```text
-현재 theme이 dark?
-├─ yes → light
-└─ no  → dark
+지금 실행 X
+↓
+함수를 등록
+↓
+나중에 click
+↓
+브라우저가 callback 실행
 ```
-
-짧은 if/else 표현이다.
 
 ---
 
-# DOM
+## 7. if / else
 
-## 8. DOM이란?
+```js
+if (!response.ok) {
+  throw new Error('REQUEST_FAILED');
+}
+```
 
-브라우저가 HTML을 읽어 JavaScript가 다룰 수 있는 객체 트리로 만든 것이 DOM이다.
+조건이 true면 블록 실행.
+
+---
+
+## 8. 삼항 연산자
+
+```js
+state.theme =
+  state.theme === 'dark' ? 'light' : 'dark';
+```
+
+```text
+조건 ? 참일 때 : 거짓일 때
+```
+
+---
+
+## 9. === 와 !
+
+### ===
+값과 타입을 엄격 비교.
+
+### !
+boolean 반전.
+
+```js
+!true  // false
+!false // true
+```
+
+햄버거:
+
+```js
+state.menuOpen = !state.menuOpen;
+```
+
+---
+
+# B. DOM
+
+## 10. DOM이란?
 
 HTML:
 
@@ -177,117 +188,108 @@ HTML:
 <button class="theme-toggle">Dark</button>
 ```
 
-JavaScript:
+브라우저는 이를 JavaScript에서 다룰 수 있는 객체로 만든다.
 
 ```js
 document.querySelector('.theme-toggle')
 ```
 
-는 실제 화면의 그 버튼을 나타내는 DOM 객체를 반환한다.
-
-JavaScript는 원본 HTML 파일을 수정하는 게 아니라 **현재 브라우저 메모리에 있는 DOM을 수정**한다.
+JavaScript는 저장소의 HTML 파일을 고치는 것이 아니라 현재 브라우저의 DOM을 바꾼다.
 
 ---
 
-## 9. querySelector와 querySelectorAll
+## 11. querySelector / querySelectorAll
 
-### querySelector
-
-첫 번째 요소 하나:
+### 하나
 
 ```js
 document.querySelector('.site-header')
 ```
 
-### querySelectorAll
-
-조건에 맞는 모든 요소:
+### 여러 개
 
 ```js
 document.querySelectorAll('a[href^="#"]')
 ```
 
-여러 링크 각각에 이벤트를 걸 때 사용한다.
-
 ---
 
-## 10. DOM 객체를 따로 모은 이유
-
-main.js:
+## 12. DOM 참조를 객체에 모은 이유
 
 ```js
 const DOM = {
   header: document.querySelector('.site-header'),
-  menuButton: document.querySelector('.menu-toggle'),
+  themeButton: document.querySelector('.theme-toggle'),
   ...
 };
 ```
 
 장점:
+- 매번 selector를 다시 쓰지 않음
+- 코드 의미가 명확
+- state와 DOM을 구분
 
-- 같은 요소를 매번 다시 찾지 않음
-- 코드에서 `DOM.themeButton`처럼 의미가 드러남
-- 화면 요소(DOM)와 상태(state)를 구분할 수 있음
+```text
+state = 화면을 결정하는 데이터
+DOM   = 실제 화면 요소 참조
+```
 
 ---
 
-## 11. DOM을 바꾸는 세 가지 방법
+## 13. DOM 변경 세 가지
 
 ### textContent
-
-텍스트 변경:
 
 ```js
 DOM.themeButton.textContent = 'Light';
 ```
 
+텍스트만 변경.
+
 ### innerHTML
 
-내부 HTML 구조 생성/교체:
-
 ```js
-DOM.projectsGrid.innerHTML = projects.map(projectCard).join('');
+DOM.projectsGrid.innerHTML =
+  projects.map(projectCard).join('');
 ```
+
+내부 HTML 구조 변경.
 
 ### classList
 
-class 추가/삭제/토글:
-
 ```js
-DOM.header.classList.add('scrolled');
-DOM.formStatus.classList.remove('error', 'success');
-DOM.navLinks.classList.toggle('active', state.menuOpen);
+DOM.navLinks.classList.toggle('active', true);
 ```
 
-CSS는 class를 보고 다른 모양을 적용한다. 따라서 JavaScript와 CSS가 class를 매개로 연결된다.
+CSS class 변경.
 
 ---
 
-# 이벤트
+# C. 이벤트
 
-## 12. 이벤트란?
+## 14. 이벤트란?
 
-브라우저에서 일어나는 사건이다.
+브라우저에서 일어난 사건.
 
-우리 프로젝트:
+| 이벤트 | 발생 |
+| --- | --- |
+| click | 클릭 |
+| input | 입력값 변경 |
+| submit | 폼 제출 |
+| scroll | 스크롤 |
+| change | 시스템 테마 변화 등 |
 
-- `click`: 클릭
-- `scroll`: 스크롤
-- `input`: 입력
-- `submit`: 폼 제출
-- 시스템 색상 모드의 `change`
-
-이벤트 연결:
+연결:
 
 ```js
-DOM.themeButton.addEventListener('click', () => {
-  ...
-});
+element.addEventListener('click', callback);
 ```
 
 ---
 
-## 13. event 객체와 preventDefault
+## 15. event 객체
+
+callback의 첫 매개변수로 이벤트 정보가 온다.
 
 ```js
 link.addEventListener('click', (event) => {
@@ -295,24 +297,23 @@ link.addEventListener('click', (event) => {
 });
 ```
 
-event에는 해당 사건의 정보가 들어 있다.
-
-`preventDefault()`는 브라우저의 기본 동작을 막는다.
-
-이 프로젝트에서는:
-
-- 앵커 링크의 즉시 점프를 막고 부드러운 스크롤 사용
-- 폼의 기본 제출을 막고 검증 후 fetch로 직접 전송
+`event.target`은 실제 이벤트가 시작된 요소다.
 
 ---
 
-# 상태와 렌더링
+## 16. preventDefault
 
-## 14. state란?
+브라우저 기본 행동을 막는다.
 
-상태(state)는 **현재 화면을 결정하는 데이터**다.
+이 프로젝트:
+- 내부 링크의 즉시 점프를 막고 smooth scroll
+- form 기본 제출을 막고 검증 후 fetch 전송
 
-main.js:
+---
+
+# D. 상태와 렌더링
+
+## 17. state
 
 ```js
 const state = {
@@ -331,104 +332,97 @@ const state = {
 };
 ```
 
-예:
-
-- theme = dark → 다크 화면
-- menuOpen = true → 모바일 메뉴 열림
-- projects.status = loading → "로딩 중"
-- selectedLanguage = Python → Python 저장소만 표시
+상태는 현재 화면이 어떤 모습이어야 하는지를 결정하는 데이터다.
 
 ---
 
-## 15. render 함수란?
+## 18. render
 
-state 자체는 화면에 보이지 않는다.
-
-state를 읽어 DOM에 반영하는 함수가 render 함수다.
-
-예:
+state는 화면에 자동 반영되지 않는다.
 
 ```text
-state.menuOpen = true
-        ↓
-renderMenu()
-        ↓
-.nav-links에 active class
-        ↓
-CSS .nav-links.active 적용
-        ↓
-메뉴 표시
+state 변경
+↓
+render 함수 호출
+↓
+DOM 변경
+↓
+CSS 적용
+↓
+새 화면
 ```
 
-이것이 미션에서 강조한 **이벤트 → 상태 → 렌더링**이다.
-
----
-
-## 16. 햄버거 메뉴 흐름
-
-```mermaid
-flowchart LR
-    A["button click"] --> B["state.menuOpen 반전"]
-    B --> C["renderMenu()"]
-    C --> D["classList.toggle('active')"]
-    D --> E["CSS가 메뉴 표시/숨김"]
-```
-
-코드 위치:
-
-- 상태: `state.menuOpen`
-- 렌더링: `renderMenu()`
-- 이벤트: `DOM.menuButton.addEventListener('click', ...)`
-- CSS: `.nav-links`, `.nav-links.active`, `.menu-toggle.active`
-
----
-
-## 17. 다크모드 흐름
+예: 메뉴
 
 ```text
-Dark 버튼 click
-→ state.theme 변경
-→ renderTheme()
-→ <html data-theme="dark">
-→ CSS [data-theme="dark"] 변수 적용
-→ localStorage 저장
-~~~
-
-새로고침 시:
-
-```text
-getInitialTheme()
-├─ localStorage 저장값 있음 → 저장값
-└─ 없음 → prefers-color-scheme 사용
+menuOpen=false
+↓ click
+menuOpen=true
+↓ renderMenu()
+active class
+↓
+메뉴 보임
 ```
 
 ---
 
-# 배열 메서드와 ES6+
+## 19. 이 프로젝트의 대표 상태 흐름
 
-## 18. map / filter / forEach
+### 테마
+```text
+click → state.theme → renderTheme → data-theme → CSS 변수
+```
 
-### map
+### 메뉴
+```text
+click → state.menuOpen → renderMenu → active class
+```
 
-각 값을 다른 값으로 변환한 새 배열을 만든다.
+### Projects
+```text
+fetch → projects.status/items → renderProjects → 카드/메시지
+```
+
+### Form
+```text
+input → form.errors → renderFieldError → 오류 메시지
+```
+
+---
+
+# E. 배열과 ES6+
+
+## 20. map
+
+입력 배열의 각 원소를 다른 값으로 변환.
 
 ```js
 projects.map(projectCard)
 ```
 
-repository 객체 배열 → HTML 문자열 배열
-
-### filter
-
-조건을 통과하는 값만 새 배열로 만든다.
-
-```js
-items.filter(({ language }) => language === selectedLanguage)
+```text
+repository 객체
+→ projectCard()
+→ HTML 문자열
 ```
 
-### forEach
+---
 
-각 요소에 작업을 수행한다.
+## 21. filter
+
+조건을 만족하는 원소만 남김.
+
+```js
+items.filter(({ language }) =>
+  language === selectedLanguage
+)
+```
+
+---
+
+## 22. forEach
+
+각 요소에 같은 작업 수행.
 
 ```js
 FORM_FIELDS.forEach((name) => {
@@ -436,183 +430,198 @@ FORM_FIELDS.forEach((name) => {
 });
 ```
 
+map/filter와 달리 결과 배열을 만드는 것이 주목적이 아니다.
+
 ---
 
-## 19. 구조분해 할당
-
-```js
-const projectCard = ({
-  name,
-  description,
-  html_url,
-  language,
-  stargazers_count
-}) => ...
-```
-
-GitHub repository 객체에는 많은 속성이 있다. 그중 필요한 것만 이름으로 꺼내 쓴다.
-
-또:
+## 23. 구조분해 할당
 
 ```js
 const { items, selectedLanguage } = state.projects;
 ```
 
-도 같은 개념이다.
-
----
-
-## 20. 템플릿 리터럴
-
-백틱을 사용하면 문자열 안에 값을 넣고 여러 줄을 쉽게 작성할 수 있다.
-
-프로젝트 카드가 대표 예다.
+는:
 
 ```js
-const projectCard = ({ name }) => `
-  <article>
-    <h3>${name}</h3>
-  </article>
-`;
+const items = state.projects.items;
+const selectedLanguage = state.projects.selectedLanguage;
 ```
 
-우리 코드에서는 외부 API 문자열을 그대로 넣지 않고 `escapeHtml()`을 거쳐 HTML 특수문자를 치환한다.
+를 짧게 쓴 것과 비슷하다.
+
+함수 매개변수에서도 사용:
+
+```js
+const projectCard = ({ name, language }) => ...
+```
 
 ---
 
-# 비동기
+## 24. 템플릿 리터럴
 
-## 21. 동기와 비동기
+백틱:
 
-네트워크 요청은 즉시 끝나지 않는다.
+```js
+`<h3>${name}</h3>`
+```
 
-GitHub 서버 응답을 기다리는 동안 브라우저 전체가 멈추면 안 된다. 그래서 비동기 작업으로 처리한다.
+- 여러 줄 문자열
+- `${...}`로 값 삽입
+
+Project 카드 동적 HTML 생성에 사용.
+
+---
+
+## 25. Set
+
+```js
+new Set(...)
+```
+
+중복 없는 값 집합.
+
+Project 필터 언어 목록에서 중복 언어 제거에 사용.
+
+```text
+['Python','Python','HTML']
+→ Set
+→ ['Python','HTML']
+```
+
+---
+
+# F. 비동기
+
+## 26. 왜 비동기가 필요한가?
+
+GitHub 서버 응답은 시간이 걸린다.
+
+브라우저 전체가 응답까지 멈추면 UI가 얼어버린다.
+
+그래서 네트워크 작업은 비동기 처리한다.
+
+---
+
+## 27. Promise
+
+나중에 결과가 정해질 작업을 표현하는 객체.
+
+```text
+Promise
+├─ pending
+├─ fulfilled
+└─ rejected
+```
+
+`fetch()`는 Promise를 반환한다.
+
+---
+
+## 28. async / await
+
+```js
+const fetchProjects = async () => {
+  const response = await fetch(url);
+  const data = await response.json();
+};
+```
+
+- `async`: 함수가 비동기 작업을 다룸
+- `await`: Promise 결과가 준비될 때까지 이 함수의 다음 줄을 보류
+
+브라우저 전체를 멈추는 것은 아니다.
+
+---
+
+## 29. fetch
 
 ```js
 const response = await fetch(url);
-const projects = await response.json();
 ```
 
-`await`는 현재 async 함수의 다음 실행을 잠시 기다리게 하지만, 브라우저 전체를 멈추는 방식은 아니다.
+response에는:
+- status
+- ok
+- headers
+- body
 
----
+등이 있다.
 
-## 22. Promise를 어떻게 이해하면 되나?
+중요:
 
-Promise는 "지금 결과가 없지만 나중에 성공하거나 실패할 작업"을 나타내는 객체라고 생각하면 된다.
-
-`fetch()`는 즉시 API 데이터 자체를 주는 것이 아니라 Promise를 반환한다.
-
-```text
-fetch()
-  ↓ Promise
-요청 진행 중
-  ↓
-성공 또는 실패
-```
-
-`await`를 사용하면 Promise의 완료 결과를 일반 값처럼 받아 다음 줄에서 사용할 수 있다.
-
----
-
-## 23. fetch와 response.ok
-
-중요한 점:
-
-`fetch()`는 인터넷 연결 자체가 실패하면 reject되지만, HTTP 404/403/500은 response를 받을 수 있다.
+> HTTP 404/500이어도 fetch 자체가 반드시 reject되는 것은 아니다.
 
 그래서:
 
 ```js
-if (!response.ok) {
-  ...
+if (!response.ok) { ... }
+```
+
+를 검사한다.
+
+---
+
+## 30. JSON
+
+GitHub API 응답은 JSON 형태다.
+
+```js
+const projects = await response.json();
+```
+
+JSON을 JavaScript 객체/배열로 변환한다.
+
+---
+
+## 31. try / catch / finally
+
+```js
+try {
+  // 실패할 수 있는 코드
+} catch (error) {
+  // 실패 처리
+} finally {
+  // 성공/실패 모두 마지막 처리
 }
 ```
 
-를 직접 확인한다.
-
-우리 GitHub API에서는 403을 별도로 처리한다.
-
----
-
-## 24. try / catch / finally
-
-### try
-
-실패할 수 있는 작업
-
-### catch
-
-오류가 발생했을 때
-
-### finally
-
-성공/실패와 상관없이 마지막에 실행
-
-Formspree 전송에서는:
-
-```text
-try
- └─ fetch 전송
-catch
- └─ 실패 메시지
-finally
- └─ 버튼 disabled 해제
-```
-
-를 사용한다.
+Formspree 전송:
+- try → 전송
+- catch → 실패 메시지
+- finally → 버튼 복구
 
 ---
 
-## 25. API 상태가 왜 필요한가?
+# G. 브라우저 API
 
-Projects는 단순히 "데이터 있음/없음"이 아니다.
+## 32. localStorage
 
-```text
-idle
- ↓
-loading
- ├─ success
- ├─ empty
- └─ error
-```
-
-사용자에게 현재 상황을 알려주기 위해 별도 상태가 필요하다.
-
-`renderProjects()`는 `state.projects.status`에 따라 다른 UI를 그린다.
-
----
-
-# 브라우저 API
-
-## 26. localStorage
-
-브라우저가 작은 문자열 데이터를 저장한다.
+브라우저에 문자열 저장.
 
 ```js
-localStorage.setItem('portfolio-theme', 'dark');
-localStorage.getItem('portfolio-theme');
+localStorage.setItem('key', 'value');
+localStorage.getItem('key');
 ```
 
-새로고침 후에도 남아서 다크모드 설정 유지에 사용한다.
+새로고침 이후에도 남는다.
+
+테마 유지에 사용.
 
 ---
 
-## 27. matchMedia
+## 33. matchMedia
 
 ```js
 window.matchMedia('(prefers-color-scheme: dark)')
 ```
 
-운영체제/브라우저의 다크모드 선호를 확인한다.
-
-저장된 사용자 선택이 없을 때 초기 테마 결정에 사용한다.
+시스템 다크모드 선호 확인.
 
 ---
 
-## 28. IntersectionObserver
+## 34. IntersectionObserver
 
-요소가 viewport와 교차하는지 브라우저가 관찰한다.
+viewport에 요소가 들어왔는지 관찰.
 
 ```js
 new IntersectionObserver(callback, {
@@ -620,55 +629,76 @@ new IntersectionObserver(callback, {
 });
 ```
 
-threshold 0.2는 대상 요소가 약 20% 보이면 callback이 실행된다는 의미다.
+20% 정도 보이면 callback.
 
-보이면 `visible` class를 붙여 CSS animation을 실행하고, 한 번 실행한 뒤 `unobserve()`한다.
+직접 scroll 좌표를 매번 계산하는 코드보다 목적이 명확하다.
 
 ---
 
-# Form
+## 35. 이벤트 위임
 
-## 29. 폼 검증 흐름
+Project 필터/Retry 같은 일부 버튼은 나중에 innerHTML로 생긴다.
 
-```text
-사용자 input
-→ validateField()
-→ state.form.errors 변경
-→ renderFieldError()
-→ 오류 텍스트 + invalid class
+이때 부모에게 click listener를 걸고 실제 클릭 요소를 찾는다.
+
+```js
+event.target.closest('.retry-projects')
 ```
 
-submit에서는 모든 필드를 다시 검사한다.
-
-이메일은 정규표현식으로 기본 형식을 확인한다.
+이를 이벤트 위임이라고 한다.
 
 ---
 
-## 30. FormData
+# H. Form
+
+## 36. trim
+
+```js
+value.trim()
+```
+
+문자열 앞뒤 공백 제거.
+
+공백만 입력한 값을 빈 값처럼 처리.
+
+---
+
+## 37. 정규표현식
+
+이메일 검사:
+
+```js
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+```
+
+완벽한 이메일 표준 검증이라기보다 기본 형식 확인용.
+
+---
+
+## 38. FormData
 
 ```js
 new FormData(DOM.form)
 ```
 
-form 안의 name/value를 전송 가능한 데이터로 만든다.
+form의 name/value 쌍을 전송 가능한 형태로 모은다.
 
-Formspree에 POST body로 넘긴다.
-
-실제 배포 페이지에서 테스트했고 이메일 수신까지 확인했다.
+Formspree POST body로 사용.
 
 ---
 
-## 31. 이 문서의 핵심 암기 포인트
+# I. 5분 복습
 
-JavaScript 평가 전에 다음만 자신의 말로 설명할 수 있으면 된다.
-
-1. DOM이 무엇인가?
-2. querySelector와 querySelectorAll 차이는?
-3. addEventListener가 무엇인가?
-4. state가 왜 필요한가?
-5. event → state → render 흐름을 예로 설명할 수 있는가?
-6. map/filter/forEach 차이는?
-7. fetch와 async/await는 왜 쓰는가?
-8. loading/success/error/empty를 왜 나누는가?
-9. localStorage는 무엇인가?
-10. IntersectionObserver는 왜 썼는가?
+- DOM = 브라우저가 만든 HTML 객체 트리
+- event = 사용자/브라우저의 사건
+- state = 현재 화면을 결정하는 데이터
+- render = state를 DOM에 반영
+- map = 변환
+- filter = 선별
+- forEach = 반복 작업
+- fetch = HTTP 요청
+- Promise = 나중에 완료될 작업
+- async/await = Promise를 읽기 쉽게 처리
+- try/catch = 실패 분기
+- localStorage = 새로고침 후에도 저장
+- IntersectionObserver = viewport 진입 감지
